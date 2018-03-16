@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -180,6 +181,56 @@ namespace XFGrest.Classes
                     }
 
                 }
+            }
+        }
+    
+        public static async void getTables()
+        {
+            HttpClient client = new HttpClient(new NativeMessageHandler());
+
+            using (client)
+            {
+                using (HttpResponseMessage response = await client.GetAsync(indexUrl.Replace("index.php", "tables.php")))
+                {
+                    using (HttpContent content = response.Content)
+                    {
+                        var page = await content.ReadAsStringAsync();
+                        extractTables(page);
+                    }
+                }
+            }
+        }
+
+        public static void extractTables(String html)
+        {
+            System.Diagnostics.Debug.WriteLine(html);
+            Document doc = Dcsoup.ParseBodyFragment(html, "");
+
+            
+            for (int i = 2; ; i++)
+            {
+                Supremes.Nodes.Element table = doc.Select("body > div:nth-child(1) > table:nth-child(1) > tbody > tr:nth-child(" + i + ")").First;
+
+                if (table == null)
+                    break;
+
+
+                Elements inputElements = table.GetElementsByTag("td");
+                System.Diagnostics.Debug.WriteLine(inputElements[1].Text);
+                App.dates[i - 2] = DateTime.ParseExact(inputElements[1].Text, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+            }
+
+            for (int i = 2; ; i++)
+            {
+                Supremes.Nodes.Element table = doc.Select("body > div:nth-child(1) > table:nth-child(2) > tbody > tr:nth-child(" + i + ")").First;
+
+                if (table == null)
+                    break;
+
+
+                Elements inputElements = table.GetElementsByTag("td");
+                System.Diagnostics.Debug.WriteLine(inputElements[1].Text);
+                App.labs[i - 2] = inputElements[1].Text;
             }
         }
     }

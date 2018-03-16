@@ -28,6 +28,8 @@ namespace XFGrest.Pages
             InitializeComponent();
             Title = "Login";
 
+            LabPicker.ItemsSource = App.labs;
+
             label1.Scale = 0;
             LabPicker.Scale = 0;
             PassEntry.Scale = 0;

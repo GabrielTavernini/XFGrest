@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using XFGrest.Classes;
 
 namespace XFGrest
 {
@@ -14,11 +15,14 @@ namespace XFGrest
 
         public static String[] sports = new String[3] { "Calcio", "Pallavolo", "Giochi Vari" };
         public static List<User> Users = new List<User>();
+        public static List<DateTime> dates = new List<DateTime>();
+        public static List<String> labs = new List<String>();
 
         public App()
         {
             InitializeComponent();
 
+            HttpRequests.getTables();
             MainPage = new NavigationPage(new Pages.LoginPage());
         }
 

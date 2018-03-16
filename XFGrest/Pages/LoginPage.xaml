@@ -21,13 +21,7 @@
             </StackLayout>
         
             <StackLayout x:Name="LoginStack" Spacing="0" Padding="24,0" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
-                <Picker x:Name="LabPicker" HorizontalOptions="Center" HeightRequest="40" WidthRequest="250" Title="Seleziona laboratorio" TextColor="White">
-                    <Picker.Items>
-                        <x:String>Traforo</x:String>
-                        <x:String>Cucina</x:String>
-                        <x:String>Admin</x:String>
-                    </Picker.Items>
-                </Picker>  
+                <Picker x:Name="LabPicker" HorizontalOptions="Center" HeightRequest="40" WidthRequest="250" Title="Seleziona laboratorio" TextColor="White"/>
                 <Entry x:Name="PassEntry" Placeholder="Password" FontSize="Medium" IsPassword="true" 
                         WidthRequest="250" TextColor="White" PlaceholderColor="#ededed"/>
             </StackLayout>
