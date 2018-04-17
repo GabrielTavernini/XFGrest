@@ -51,7 +51,14 @@ namespace XFGrest.Pages
             LoadingIndicator.IsRunning = true;
             LodingLabel.IsVisible = true;
 
-            if (!await HttpRequests.LoginAsync((string) LabPicker.SelectedItem, PassEntry.Text))
+            if(LabPicker.SelectedIndex == App.labs.Count - 1)
+                JsonRequests.labID = 99;
+            else
+                JsonRequests.labID = LabPicker.SelectedIndex;
+           
+            JsonRequests.password = PassEntry.Text;
+
+            if (!await JsonRequests.getUsers())
             {
                 System.Diagnostics.Debug.WriteLine("Connection Error!");
                 LoadingIndicator.IsVisible = false;
@@ -71,17 +78,15 @@ namespace XFGrest.Pages
             await LabPicker.FadeTo(0, App.AnimationSpeed, Easing.SinIn);
             await PassEntry.FadeTo(0, App.AnimationSpeed, Easing.SinIn);
 
-            System.Diagnostics.Debug.WriteLine("Logged:");
-            foreach (User u in App.Users)
-                System.Diagnostics.Debug.WriteLine(u.name);
 
-            System.Diagnostics.Debug.WriteLine(App.Users.Count);
             await Navigation.PushAsync(new MainPage());
         }
 
         protected async override void OnAppearing()
         {
             base.OnAppearing();
+
+            await JsonRequests.getTables();
 
             Initialize();
 

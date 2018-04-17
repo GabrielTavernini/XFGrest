@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using XFGrest.Classes;
 
@@ -10,10 +11,10 @@ namespace XFGrest
         public static string firstPage = "";
         public static uint AnimationSpeed = 75;
         public static int DelaySpeed = 300;
-        public static int Day = 1;
+        public static int Day = 0;
         public static bool Foreground = true;
 
-        public static String[] sports = new String[3] { "Calcio", "Pallavolo", "Giochi Vari" };
+        public static List<String> sports = new List<String>();
         public static List<User> Users = new List<User>();
         public static List<DateTime> dates = new List<DateTime>();
         public static List<String> labs = new List<String>();
@@ -21,8 +22,7 @@ namespace XFGrest
         public App()
         {
             InitializeComponent();
-
-            HttpRequests.getTables();
+            
             MainPage = new NavigationPage(new Pages.LoginPage());
         }
 

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XFGrest.Classes;
 
 namespace XFGrest.Controls
 {
     public class UserCell : ViewCell
     {
-        static int colorChange = 0;
-        
         public UserCell()
         {
             StackLayout st1 = new StackLayout() { Orientation = StackOrientation.Horizontal};
@@ -41,55 +40,21 @@ namespace XFGrest.Controls
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.Center
             };
+            presenceS.Toggled += (object sender, ToggledEventArgs e) => PresenceChanged(sender, e);
 
             Picker sportP = new Picker()
             {
                 Margin = new Thickness(10, 0, 0, 0),
                 ItemsSource = App.sports,
                 Title = "Seleziona Sport",
-                //HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center
             };
+            sportP.SelectedIndexChanged += async (sender, e) => SportChanged(sender, e);
 
-            /*
-            Grid mainG = new Grid()
-            {
-                Scale = 0,
-                BackgroundColor = Color.Transparent,
-                ColumnDefinitions = {
-                    new ColumnDefinition{Width = GridLength.Auto},
-                    new ColumnDefinition{Width = new GridLength(1, GridUnitType.Star)}
-                },
-
-                RowDefinitions = {
-                    new RowDefinition{Height = GridLength.Auto},
-                    new RowDefinition{Height = new GridLength(1, GridUnitType.Star)}
-                }
-            };
-
-            if (colorChange == 0)
-            {
-                View.BackgroundColor = Color.White;
-                colorChange = 1;                
-            }
-            else
-            {
-                View.BackgroundColor = Color.Silver;
-                colorChange = 0;   
-            }
-
-            mainG.Children.Add(subjectL, 0, 0);
-            mainG.Children.Add(typeL, 0, 1);
-            mainG.Children.Add(presenceS, 1, 0);
-            mainG.Children.Add(sportP, 1, 1);*/
 
             st1.Children.Add(subjectL);
             st1.Children.Add(sportP);
             st1.Children.Add(presenceS);
-            //st2.Children.Add(typeL);
-
-            //mainSt.Children.Add(st1);
-            //mainSt.Children.Add(st2);
 
 
             View = st1;
@@ -97,11 +62,14 @@ namespace XFGrest.Controls
 
             //-----------------Bindings-----------------
             subjectL.SetBinding(Label.TextProperty, nameof(User.displayString));
-            presenceS.SetBinding(Switch.IsToggledProperty, nameof(User.presence));
-            sportP.SetBinding(Picker.SelectedItemProperty, nameof(User.sport));
-            //typeL.SetBinding(Label.TextProperty, nameof(User.etaString));
+            presenceS.SetBinding(Switch.IsToggledProperty, nameof(User.presence), BindingMode.TwoWay);
+            sportP.SetBinding(Picker.SelectedItemProperty, nameof(User.sport), BindingMode.TwoWay);
         }
 
+        private async void SportChanged(object sender, EventArgs e)
+        {
+            await JsonRequests.PostUserEdit(this.BindingContext as User);
+        }
 
         protected override async void OnAppearing()
         {
@@ -114,17 +82,10 @@ namespace XFGrest.Controls
             catch { }
         }
 
-        protected override async void OnTapped()
+        private async void PresenceChanged(object sender, EventArgs e)
         {
-            base.OnTapped();
-
-            try
-            {
-                await View.ScaleTo(1.2, 125);
-                await View.ScaleTo(1, 125);
-            }
-            catch { }
-
+            await JsonRequests.PostUserEdit(this.BindingContext as User);
         }
+
     }
 }

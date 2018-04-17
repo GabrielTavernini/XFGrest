@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:this="clr-namespace:XFGrest.Pages"
              xmlns:local="clr-namespace:XFGrest.Controls"
-             x:Class="XFGrest.Pages.MainPage"
+             x:Class="XFGrest.Pages.AdminMainPage"
              BackgroundColor="#FFFFFF">
 
     <this:LoginPage.Resources>
